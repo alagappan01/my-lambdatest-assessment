@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -19,7 +20,7 @@ public class PropertiesFileRead {
 	Properties properties;
 	String applicationPropFilePath = "src//test//resources//application.properties";
 	String capabiltiesPropFilePath = "src//test//resources//capabilities.properties";
-	RemoteWebDriver driver;
+	protected static ThreadLocal<RemoteWebDriver> driver = new ThreadLocal<>();
 
 	public String getCapPropertyFilePath() {
 		return this.capabiltiesPropFilePath;
@@ -52,8 +53,13 @@ public class PropertiesFileRead {
 			throw new RuntimeException("Grid Url not specified in the Properties file.");
 
 	}
+	
+	public WebDriver getDriver() {
+        //Get driver from ThreadLocalMap
+        return driver.get();
+    }
 
-	public RemoteWebDriver getRemoteWebDriver(String environment, String browserName, String browserVersion,
+	public void getRemoteWebDriver(String environment, String browserName, String browserVersion,
 			String platformName) throws MalformedURLException {
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -83,8 +89,8 @@ public class PropertiesFileRead {
 			try {
 				System.out.println("https://" + capHashMap.get("user") + ":" + capHashMap.get("accessKey") + "@"
 						+ "hub.lambdatest.com/wd/hub");
-				driver = new RemoteWebDriver(new URL("https://" + capHashMap.get("user") + ":"
-						+ capHashMap.get("accessKey") + "@" + "hub.lambdatest.com/wd/hub"), capabilities);
+				driver.set(new RemoteWebDriver(new URL("https://" + capHashMap.get("user") + ":"
+						+ capHashMap.get("accessKey") + "@" + "hub.lambdatest.com/wd/hub"), capabilities));
 			} catch (MalformedURLException e) {
 				System.out.println("Invalid grid URL");
 			} catch (Exception e) {
@@ -99,16 +105,16 @@ public class PropertiesFileRead {
 				System.setProperty("webdriver.chrome.driver", "chromedriver");
 				ChromeOptions options = new ChromeOptions();
 				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-				driver = new RemoteWebDriver(new URL("http://192.168.0.14:4444/wd/hub"), capabilities);
+				driver.set(new RemoteWebDriver(new URL("http://192.168.0.14:4444/wd/hub"), capabilities));
 			}
 			if (browserName.equalsIgnoreCase("firefox")) {
 				System.setProperty("webdriver.gecko.driver", "geckodriver");
 				FirefoxOptions options = new FirefoxOptions();
 				capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
-				driver = new RemoteWebDriver(new URL("http://192.168.0.14:4444/wd/hub"), capabilities);
+				driver.set(new RemoteWebDriver(new URL("http://192.168.0.14:4444/wd/hub"), capabilities));
 			}
 		}
-		return driver;
+
 	}
 
 	public String getProperty(String propertyFilePath, String propertyName) {

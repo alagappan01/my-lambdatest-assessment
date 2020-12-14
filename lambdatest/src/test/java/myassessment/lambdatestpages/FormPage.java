@@ -167,7 +167,7 @@ public class FormPage extends PropertiesFileRead {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 		Thread.sleep(2000);
 
-		TakesScreenshot scrShot = ((TakesScreenshot) driver.findElement(jenkinsImage));
+		TakesScreenshot scrShot = ((TakesScreenshot) driver);
 		File fileName = new File("jenkins.jpeg");
 
 		File screen = scrShot.getScreenshotAs(OutputType.FILE);
