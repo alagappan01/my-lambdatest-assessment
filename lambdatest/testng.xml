@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Lambda Assessment Tests" parallel="tests"
+	thread-count="2">
+	<test name="Test on Chrome">
+	<!-- Below environment value can be changed to Cloud to run in Lambda cloud -->
+	<!-- Lambda Cloud user and accessKey to be configured in capabilities.properties File  -->
+		<parameter name="environment" value="Local" />
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="browserVersion" value="87.0" />
+		<parameter name="platformName" value="MacOS Big sur" />
+		<classes>
+			<class name="myassessment.lambdatest.TestNgLambdaTest" />
+		</classes>
+	</test>
+	<test name="Test on Firefox">
+	<!-- Below environment value can be changed to Cloud to run in Lambda cloud -->
+	<!-- Lambda Cloud user and accessKey to be configured in capabilities.properties File  -->
+		<parameter name="environment" value="Local" />
+		<parameter name="browserName" value="Firefox" />
+		<parameter name="browserVersion" value="84.0" />
+		<parameter name="platformName" value="MacOS Big sur" />
+		<classes>
+			<class name="myassessment.lambdatest.TestNgLambdaTest" />
+		</classes>
+	</test>
+</suite>
